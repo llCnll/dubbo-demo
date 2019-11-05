@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="cn.chennan.gmail.service.impl"></context:component-scan>
+
+    <dubbo:application name="order-service-consumer"></dubbo:application>
+
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"></dubbo:registry>
+
+    <!-- 声明需要调用的远程服务的接口, 生成远程服务代理 -->
+    <!--check = false 启动不检查是否存在, 调用时才检查-->
+    <!-- timeout 默认为1000 -->
+    <!-- 幂等(设置重试次数)[查询 删除 修改} 非幂等(不设置重试次数)[新增] -->
+    <dubbo:reference check="false" interface="cn.chennan.gmall.service.UserService" id="userSerivce" version="*">
+        <dubbo:method name="getUserAddressList" timeout="1000" retries="3"></dubbo:method>
+    </dubbo:reference>
+    <!-- 全局配置 -->
+    <dubbo:consumer timeout="2000" check="false"></dubbo:consumer>
+    <!--<dubbo:monitor protocol="registry"></dubbo:monitor>-->
+    <dubbo:monitor address="127.0.0.1:7070"></dubbo:monitor>
+</beans>
