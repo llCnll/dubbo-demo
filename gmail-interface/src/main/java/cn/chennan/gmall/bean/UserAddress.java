@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 用户地址
- * @author lfy
+ * @author ChenNan
  *
  */
 public class UserAddress implements Serializable {
